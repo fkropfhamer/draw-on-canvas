@@ -1,0 +1,19 @@
+{
+  "name": "draw-on-canvas",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fkropfhamer/draw-on-canvas.git"
+  },
+  "author": "fkropfhamer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fkropfhamer/draw-on-canvas/issues"
+  },
+  "homepage": "https://github.com/fkropfhamer/draw-on-canvas#readme"
+}
