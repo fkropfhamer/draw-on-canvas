@@ -1,7 +1,8 @@
 {
   "name": "draw-on-canvas",
   "version": "0.0.0",
-  "description": "",
+  "description": "draw on canvas",
+  "keywords": ["canvas", "draw", "creative"], 
   "main": "src/index.js",
   "scripts": {
     "test": "jest"
@@ -17,3 +18,4 @@
   },
   "homepage": "https://github.com/fkropfhamer/draw-on-canvas#readme"
 }
+
