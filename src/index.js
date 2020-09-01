@@ -46,7 +46,7 @@ export default class Draw {
      * @param {number} height 
      * @param {*} opts 
      */
-    constructor(element, width, height, { backgroundColor = 'cyan', strokeColor = 'black', strokeWeight = 15 }) {
+    constructor(element, width, height, { backgroundColor = 'cyan', strokeColor = 'black', strokeWeight = 15 } = {}) {
         this.canvas = document.createElement('canvas');
         this.canvas.width = width;
         this.canvas.height = height;
@@ -56,6 +56,7 @@ export default class Draw {
 
         this.ctx = this.canvas.getContext("2d");
         this.ctx.strokeStyle = strokeColor;
+        this.ctx.fillStyle = strokeColor;
         this.ctx.lineWidth = strokeWeight;
 
         this.drawing = [[]];
@@ -72,6 +73,7 @@ export default class Draw {
      */
     changeStrokeColor(strokeColor) {
         this.ctx.strokeStyle = strokeColor;
+        this.ctx.fillStyle = strokeColor;
     }
 
     /**
