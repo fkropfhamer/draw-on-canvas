@@ -68,6 +68,34 @@ export default class Draw {
         this.setupEventListeners();
     }
 
+    /**
+     * 
+     * @param {string | CanvasGradient | CanvasPattern} strokeColor 
+     */
+    changeStrokeColor(strokeColor) {
+        this.ctx.strokeStyle = strokeColor;
+    }
+
+    /**
+     * 
+     * @param {string} backgroundColor 
+     */
+    changeBackgroundColor(backgroundColor) {
+        this.canvas.style.backgroudColor = backgroundColor;
+    }
+
+    /**
+     * 
+     * @param {number} strokeWeight 
+     */
+    changeStrokeWeight(strokeWeight) {
+        this.ctx.lineWidth = strokeWeight;
+    }
+
+    getDrawing() {
+        return this.drawing;
+    }
+
     setupEventListeners() {
         this.canvas.addEventListener("mousemove", (event) => {
             const x = event.offsetX;
