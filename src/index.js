@@ -44,11 +44,9 @@ export default class Draw {
      * @param {HTMLElement} element 
      * @param {number} width 
      * @param {number} height 
-     * @param {string} backgroundColor
-     * @param {string | CanvasGradient | CanvasPattern} strokeColor
-     * @param {number} strokeWeight
+     * @param {*} opts 
      */
-    constructor(element, width, height, backgroundColor = 'cyan', strokeColor = 'black', strokeWeight = 15) {
+    constructor(element, width, height, { backgroundColor = 'cyan', strokeColor = 'black', strokeWeight = 15 }) {
         this.canvas = document.createElement('canvas');
         this.canvas.width = width;
         this.canvas.height = height;
