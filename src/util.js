@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {array} array 
+ * @param {number} chunkSize 
+ */
 export function chunkArray(array, chunkSize) {
     const chunkedArray = [];
     let index = 0;

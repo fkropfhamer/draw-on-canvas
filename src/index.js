@@ -44,7 +44,7 @@ export default class Draw {
      * @param {HTMLElement} element 
      * @param {number} width 
      * @param {number} height 
-     * @param {*} opts 
+     * @param {object} opts 
      */
     constructor(element, width, height, { backgroundColor = 'cyan', strokeColor = 'black', strokeWeight = 15 } = {}) {
         this.canvas = document.createElement('canvas');
