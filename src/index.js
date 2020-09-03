@@ -1,4 +1,4 @@
-import { chunkArray } from './util';
+import { chunkArray, downloadURI } from './util';
 
 export default class Draw {
     /**
@@ -94,6 +94,11 @@ export default class Draw {
 
     getDrawing() {
         return this.drawing;
+    }
+
+    donwloadPNG(filename = 'canvas.png') {
+        const dataURL = this.canvas.toDataURL("image/png");
+        downloadURI(dataURL, filename);
     }
 
     setupEventListeners() {
