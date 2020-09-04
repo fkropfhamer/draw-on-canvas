@@ -1,4 +1,4 @@
 .DS-Store
 node_modules/
 .vscode/
-
+coverage/
