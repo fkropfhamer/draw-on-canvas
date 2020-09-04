@@ -125,6 +125,50 @@ describe('Draw', () => {
         expect(mockCanvas.toDataURL).toHaveBeenCalledTimes(1);
     });
 
+    test('onMouseMove mouseIsDown = true', () => {
+        draw.mouseIsDown = true;
+        draw.draw = jest.fn();
+
+        draw.onMouseMove({offsetX: 1, offsetY: 2});
+
+        expect(draw.drawing).toEqual([[{x: 1, y: 2}]]);
+        expect(draw.draw).toHaveBeenCalledTimes(1);
+    });
+
+    test('onMouseMove mouseIsDown = false', () => {
+        draw.mouseIsDown = false;
+        draw.draw = jest.fn();
+
+        draw.onMouseMove({offsetX: 1, offsetY: 2});
+
+        expect(draw.drawing).toEqual([[]]);
+        expect(draw.draw).toHaveBeenCalledTimes(0);
+    });
+
+    test('onMouseDown', () => {
+        draw.mouseIsDown = false;
+        draw.onMouseDown();
+
+        expect(draw.mouseIsDown).toBe(true);
+    });
+
+    test('onMouseUp last line is empty', () => {
+        draw.mouseIsDown = true;
+        draw.onMouseUp();
+
+        expect(draw.mouseIsDown).toBe(false);
+        expect(draw.drawing).toEqual([[]]);
+    });
+
+    test('onMouseUp last line is not empty', () => {
+        draw.mouseIsDown = true;
+        draw.drawing = [[{x: 1, y: 2}]];
+        draw.onMouseUp();
+
+        expect(draw.mouseIsDown).toBe(false);
+        expect(draw.drawing).toEqual([[{x: 1, y: 2}], []]);
+    });
+
     test('getPixelArray', () => {
         expect(draw.getPixelArray()).toEqual([]);
         expect(mockCtx.getImageData).toHaveBeenCalledTimes(1);
