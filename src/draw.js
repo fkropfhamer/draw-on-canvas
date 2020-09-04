@@ -96,7 +96,7 @@ export default class Draw {
         return this.drawing;
     }
 
-    donwloadPNG(filename = 'canvas.png') {
+    downloadPNG(filename = 'canvas.png') {
         const dataURL = this.canvas.toDataURL("image/png");
         downloadURI(dataURL, filename);
     }
