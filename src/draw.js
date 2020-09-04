@@ -102,25 +102,30 @@ export default class Draw {
     }
 
     setupEventListeners() {
-        this.canvas.addEventListener("mousemove", (event) => {
-            const x = event.offsetX;
-            const y = event.offsetY;
-            if (this.mouseIsDown) {
-                this.drawing[this.drawing.length - 1].push({x, y});
-                this.draw();
-            }
-        });
+        this.canvas.addEventListener("mousemove", this.onMouseMove.bind(this));
         
-        window.addEventListener("mousedown", () => {
-            this.mouseIsDown = true;
-        });
-        
-        window.addEventListener("mouseup", () => {
-            if (this.drawing[this.drawing.length - 1].length > 0) {
-                this.drawing.push([])
-            }
-            this.mouseIsDown = false;
-        })
+        window.addEventListener("mousedown", this.onMouseDown.bind(this));
+        window.addEventListener("mouseup", this.onMouseUp.bind(this));
+    }
+
+    onMouseMove(event) {
+        const x = event.offsetX;
+        const y = event.offsetY;
+        if (this.mouseIsDown) {
+            this.drawing[this.drawing.length - 1].push({x, y});
+            this.draw();
+        }
+    }
+
+    onMouseDown() {
+        this.mouseIsDown = true;
+    }
+
+    onMouseUp() {
+        if (this.drawing[this.drawing.length - 1].length > 0) {
+            this.drawing.push([])
+        }
+        this.mouseIsDown = false;
     }
 
     getPixelArray() {
