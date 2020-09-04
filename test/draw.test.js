@@ -4,18 +4,36 @@ import { chunkArray } from '../src/util';
 let draw;
 let mockCtx;
 let mockCanvas;
-let el;
+let mockElement;
 
 describe('Draw', () => {
     beforeEach(() => {
-        mockCtx = { canvas: { height: 100, width: 200 }, getImageData: jest.fn(() => ({data: []})) };
-        mockCanvas = { style: {}, getContext: jest.fn(() => mockCtx), addEventListener: jest.fn()};
-        el = { appendChild: jest.fn() };
+        mockCtx = { 
+            canvas: { height: 100, width: 200 },
+            getImageData: jest.fn(() => ({data: []})),
+            clearRect: jest.fn(),
+            beginPath: jest.fn(),
+            arc: jest.fn(),
+            closePath: jest.fn(),
+            fill: jest.fn(),
+            moveTo: jest.fn(),
+            quadraticCurveTo: jest.fn(),
+            stroke: jest.fn()
+        };
+
+        mockCanvas = { 
+            style: {},
+            getContext: jest.fn(() => mockCtx),
+            addEventListener: jest.fn(),
+            toDataURL: jest.fn(() => 'test')
+        };
+
+        mockElement = { appendChild: jest.fn() };
 
         document.createElement = jest.fn(() => mockCanvas);
         window.addEventListener = jest.fn();
 
-        draw = new Draw(el, 1, 2);
+        draw = new Draw(mockElement, 1, 2);
     });
 
     test('getPixelArray', () => {
@@ -51,8 +69,8 @@ describe('Draw', () => {
         expect(mockCanvas.height).toBe(2);
         expect(mockCanvas.style.backgroundColor).toBe('cyan');
 
-        expect(el.appendChild).toHaveBeenCalledTimes(1);
-        expect(el.appendChild).toHaveBeenCalledWith(mockCanvas);
+        expect(mockElement.appendChild).toHaveBeenCalledTimes(1);
+        expect(mockElement.appendChild).toHaveBeenCalledWith(mockCanvas);
 
         expect(mockCanvas.getContext).toHaveBeenCalledTimes(1);
         expect(mockCanvas.getContext).toHaveBeenCalledWith('2d');
@@ -94,5 +112,102 @@ describe('Draw', () => {
         draw.drawing = [[1,2,3,4,5]];
         
         expect(draw.getDrawing()).toEqual([[1,2,3,4,5]]);
+    });
+
+    test('downloadPNG', () => {
+        const mockLink = { click: jest.fn() };
+        document.createElement = jest.fn(() => mockLink);
+        document.body.appendChild = jest.fn();
+        document.body.removeChild = jest.fn();
+
+        draw.downloadPNG();
+
+        expect(mockCanvas.toDataURL).toHaveBeenCalledTimes(1);
+    });
+
+    test('getPixelArray', () => {
+        expect(draw.getPixelArray()).toEqual([]);
+        expect(mockCtx.getImageData).toHaveBeenCalledTimes(1);
+        expect(mockCtx.getImageData).toHaveBeenCalledWith(0, 0, 1, 2);
+    });
+
+    test('getGreyScalePixelArray', () => {
+        draw.getPixelArray = jest.fn(() => [1, 2, 3, 4, 5, 6]);
+
+        expect(draw.getGreyScalePixelArray()).toEqual([4]);
+        expect(draw.getPixelArray).toHaveBeenCalledTimes(1);
+    });
+
+    test('reset', () => {
+        draw.drawing = [[], [], []];
+
+        draw.reset();
+
+        expect(draw.drawing).toEqual([[]]);
+        expect(mockCtx.clearRect).toHaveBeenCalledTimes(1);
+        expect(mockCtx.clearRect).toHaveBeenCalledWith(0, 0, 1, 2);
+    });
+
+    test('draw', () => {
+        draw.drawing = [[], [], [], [], []];
+        draw.drawPoints = jest.fn();
+
+        draw.draw();
+
+        expect(draw.drawPoints).toHaveBeenCalledTimes(5);
+        expect(draw.drawPoints).toHaveBeenCalledWith([]);
+    });
+
+    test('drawLinePoint', () => {
+        const point = {x: 1, y: 2};
+
+        draw.drawLinePoint(point);
+
+        expect(mockCtx.beginPath).toHaveBeenCalledTimes(1);
+        expect(mockCtx.arc).toHaveBeenCalledTimes(1);
+        expect(mockCtx.arc).toHaveBeenCalledWith(1, 2, 7.5, 0, Math.PI * 2, true);
+        expect(mockCtx.closePath).toHaveBeenCalledTimes(1);
+        expect(mockCtx.fill).toHaveBeenCalledTimes(1);
+    });
+
+    test('drawPoints empty', () => {
+        const points = [];
+        draw.drawLinePoint = jest.fn();
+        
+        draw.drawPoints(points);
+
+        expect(draw.drawLinePoint).toHaveBeenCalledTimes(0);
+        expect(mockCtx.beginPath).toHaveBeenCalledTimes(0);
+    });
+
+    test('drawPoints <6', () => {
+        const points = [{x: 1, y: 2}, {x: 3, y: 4}];
+        draw.drawLinePoint = jest.fn();
+        
+        draw.drawPoints(points);
+
+        expect(draw.drawLinePoint).toHaveBeenCalledTimes(1);
+        expect(draw.drawLinePoint).toHaveBeenCalledWith({x: 1, y: 2});
+
+        expect(mockCtx.beginPath).toHaveBeenCalledTimes(0);
+    });
+
+    test('drawPoints >6', () => {
+        const points = [{x: 1, y: 2}, {x: 3, y: 4}, {x: 5, y: 6}, {x: 7, y: 8}, {x: 11, y: 12}, {x: 13, y: 14}, {x: 15, y: 16}];
+        draw.drawLinePoint = jest.fn();
+        
+        draw.drawPoints(points);
+
+        
+        expect(mockCtx.beginPath).toHaveBeenCalledTimes(1);
+        expect(mockCtx.moveTo).toHaveBeenCalledTimes(1);
+        expect(mockCtx.moveTo).toHaveBeenCalledWith(1, 2);
+
+        expect(mockCtx.quadraticCurveTo).toHaveBeenCalledTimes(5);
+
+        expect(mockCtx.stroke).toHaveBeenCalledTimes(1);
+
+        expect(draw.drawLinePoint).toHaveBeenCalledTimes(1);
+        expect(draw.drawLinePoint).toHaveBeenCalledWith({x: 15, y: 16});
     });
 });
