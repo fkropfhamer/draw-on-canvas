@@ -81,7 +81,7 @@ export default class Draw {
      * @param {string} backgroundColor 
      */
     changeBackgroundColor(backgroundColor) {
-        this.canvas.style.backgroudColor = backgroundColor;
+        this.canvas.style.backgroundColor = backgroundColor;
     }
 
     /**
