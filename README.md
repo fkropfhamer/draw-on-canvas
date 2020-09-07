@@ -1,4 +1,5 @@
 # draw-on-canvas
+[![codecov](https://codecov.io/gh/fkropfhamer/draw-on-canvas/branch/master/graph/badge.svg)](https://codecov.io/gh/fkropfhamer/draw-on-canvas)
 
 ## Installation
 Using npm:
