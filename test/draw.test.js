@@ -1,5 +1,5 @@
 import Draw from '../src/draw';
-import { chunkArray } from '../src/util';
+import * as util from '../src/util';
 
 let draw;
 let mockCtx;
@@ -27,6 +27,8 @@ describe('Draw', () => {
             addEventListener: jest.fn(),
             toDataURL: jest.fn(() => 'test')
         };
+
+        util.downloadURI = jest.fn();
 
         mockElement = { appendChild: jest.fn() };
 
@@ -86,7 +88,11 @@ describe('Draw', () => {
         expect(draw.width).toBe(1);
     
         expect(mockCanvas.addEventListener).toHaveBeenCalledTimes(1);
+        expect(mockCanvas.addEventListener.mock.calls[0][0]).toBe('mousemove');
+
         expect(window.addEventListener).toHaveBeenCalledTimes(2);
+        expect(window.addEventListener.mock.calls[0][0]).toBe('mousedown');
+        expect(window.addEventListener.mock.calls[1][0]).toBe('mouseup');
     });
 
     test('changeStrokeColor', () => {
@@ -122,7 +128,11 @@ describe('Draw', () => {
 
         draw.downloadPNG();
 
+        expect(util.downloadURI).toHaveBeenCalledTimes(1);
+        expect(util.downloadURI).toHaveBeenCalledWith('test', 'canvas.png');
+
         expect(mockCanvas.toDataURL).toHaveBeenCalledTimes(1);
+        expect(mockCanvas.toDataURL).toHaveBeenCalledWith('image/png');
     });
 
     test('onMouseMove mouseIsDown = true', () => {
@@ -237,7 +247,7 @@ describe('Draw', () => {
     });
 
     test('drawPoints >6', () => {
-        const points = [{x: 1, y: 2}, {x: 3, y: 4}, {x: 5, y: 6}, {x: 7, y: 8}, {x: 11, y: 12}, {x: 13, y: 14}, {x: 15, y: 16}];
+        const points = [{x: 1, y: 2}, {x: 3, y: 4}, {x: 5, y: 6}, {x: 7, y: 8}, {x: 11, y: 12}, {x: 13, y: 14}];
         draw.drawLinePoint = jest.fn();
         
         draw.drawPoints(points);
@@ -247,11 +257,12 @@ describe('Draw', () => {
         expect(mockCtx.moveTo).toHaveBeenCalledTimes(1);
         expect(mockCtx.moveTo).toHaveBeenCalledWith(1, 2);
 
-        expect(mockCtx.quadraticCurveTo).toHaveBeenCalledTimes(5);
+        expect(mockCtx.quadraticCurveTo).toHaveBeenCalledTimes(4);
+        expect(mockCtx.quadraticCurveTo.mock.calls).toEqual([[3, 4, 4, 5], [5, 6, 6, 7], [7, 8, 9, 10], [11, 12, 13, 14]]);
 
         expect(mockCtx.stroke).toHaveBeenCalledTimes(1);
 
         expect(draw.drawLinePoint).toHaveBeenCalledTimes(1);
-        expect(draw.drawLinePoint).toHaveBeenCalledWith({x: 15, y: 16});
+        expect(draw.drawLinePoint).toHaveBeenCalledWith({x: 13, y: 14});
     });
 });
