@@ -96,6 +96,10 @@ export default class Draw {
         return this.drawing;
     }
 
+    /**
+     * 
+     * @param {string} filename 
+     */
     downloadPNG(filename = 'canvas.png') {
         const dataURL = this.canvas.toDataURL("image/png");
         downloadURI(dataURL, filename);
@@ -108,6 +112,10 @@ export default class Draw {
         window.addEventListener("mouseup", this.onMouseUp.bind(this));
     }
 
+    /**
+     * 
+     * @param {MouseEvent} event 
+     */
     onMouseMove(event) {
         const x = event.offsetX;
         const y = event.offsetY;
