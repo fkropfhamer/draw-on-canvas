@@ -1,5 +1,5 @@
 import Draw from '../src/draw';
-import { chunkArray } from '../src/util';
+import * as util from '../src/util';
 
 let draw;
 let mockCtx;
@@ -27,6 +27,8 @@ describe('Draw', () => {
             addEventListener: jest.fn(),
             toDataURL: jest.fn(() => 'test')
         };
+
+        util.downloadURI = jest.fn();
 
         mockElement = { appendChild: jest.fn() };
 
@@ -125,6 +127,9 @@ describe('Draw', () => {
         document.body.removeChild = jest.fn();
 
         draw.downloadPNG();
+
+        expect(util.downloadURI).toHaveBeenCalledTimes(1);
+        expect(util.downloadURI).toHaveBeenCalledWith('test', 'canvas.png');
 
         expect(mockCanvas.toDataURL).toHaveBeenCalledTimes(1);
         expect(mockCanvas.toDataURL).toHaveBeenCalledWith('image/png');
@@ -253,6 +258,7 @@ describe('Draw', () => {
         expect(mockCtx.moveTo).toHaveBeenCalledWith(1, 2);
 
         expect(mockCtx.quadraticCurveTo).toHaveBeenCalledTimes(4);
+        expect(mockCtx.quadraticCurveTo.mock.calls).toEqual([[3, 4, 4, 5], [5, 6, 6, 7], [7, 8, 9, 10], [11, 12, 13, 14]]);
 
         expect(mockCtx.stroke).toHaveBeenCalledTimes(1);
 
