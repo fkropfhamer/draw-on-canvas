@@ -1,5 +1,9 @@
 # draw-on-canvas
 [![codecov](https://codecov.io/gh/fkropfhamer/draw-on-canvas/branch/master/graph/badge.svg)](https://codecov.io/gh/fkropfhamer/draw-on-canvas)
+![NPM](https://img.shields.io/npm/l/draw-on-canvas)
+![npm](https://img.shields.io/npm/v/draw-on-canvas)
+![npm](https://img.shields.io/npm/dt/draw-on-canvas)
+![npm bundle size](https://img.shields.io/bundlephobia/min/draw-on-canvas)
 
 ## Installation
 Using npm:
