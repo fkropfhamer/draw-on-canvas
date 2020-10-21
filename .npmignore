@@ -1,2 +1,8 @@
 .DS_Store
+.github/
+test/
+.babelrc
+.eslintignore
+.eslintrc.js
+stryker.conf.json
 
