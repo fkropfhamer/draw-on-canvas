@@ -55,11 +55,11 @@ export default class Draw {
     element.appendChild(this.canvas);
 
     this.ctx = this.canvas.getContext('2d');
-    this.ctx.strokeStyle = strokeColor;
-    this.ctx.fillStyle = strokeColor;
-    this.ctx.lineWidth = strokeWeight;
 
-    this.drawing = [[]];
+    this.strokeColor = strokeColor;
+    this.strokeWeight = strokeWeight;
+
+    this.drawing = [{ color: strokeColor, strokeWeight, points: [] }];
 
     this.height = height;
     this.width = width;
@@ -72,8 +72,7 @@ export default class Draw {
    * @param {string | CanvasGradient | CanvasPattern} strokeColor
    */
   changeStrokeColor(strokeColor) {
-    this.ctx.strokeStyle = strokeColor;
-    this.ctx.fillStyle = strokeColor;
+    this.strokeColor = strokeColor;
   }
 
   /**
@@ -89,7 +88,7 @@ export default class Draw {
    * @param {number} strokeWeight
    */
   changeStrokeWeight(strokeWeight) {
-    this.ctx.lineWidth = strokeWeight;
+    this.strokeWeight = strokeWeight;
   }
 
   getDrawing() {
@@ -120,18 +119,21 @@ export default class Draw {
     const x = event.offsetX;
     const y = event.offsetY;
     if (this.mouseIsDown) {
-      this.drawing[this.drawing.length - 1].push({ x, y });
+      this.drawing[this.drawing.length - 1].points.push({ x, y });
       this.draw();
     }
   }
 
   onMouseDown() {
     this.mouseIsDown = true;
+
+    this.drawing[this.drawing.length - 1].strokeWeight = this.strokeWeight;
+    this.drawing[this.drawing.length - 1].color = this.strokeColor;
   }
 
   onMouseUp() {
-    if (this.drawing[this.drawing.length - 1].length > 0) {
-      this.drawing.push([]);
+    if (this.drawing[this.drawing.length - 1].points.length > 0) {
+      this.drawing.push({ color: this.strokeColor, strokeWeight: this.strokeWeight, points: [] });
     }
     this.mouseIsDown = false;
   }
@@ -151,13 +153,18 @@ export default class Draw {
   }
 
   reset() {
-    this.drawing = [[]];
+    this.drawing = [{ color: this.strokeColor, strokeWeight: this.strokeWeight, points: [] }];
+    this.clearCanvas();
+  }
+
+  clearCanvas() {
     this.ctx.clearRect(0, 0, this.width, this.height);
   }
 
   draw() {
+    this.clearCanvas();
     this.drawing.forEach((stroke) => {
-      this.drawPoints(stroke);
+      this.drawStroke(stroke);
     });
   }
 
@@ -168,7 +175,13 @@ export default class Draw {
     this.ctx.fill();
   }
 
-  drawPoints(points) {
+  drawStroke(stroke) {
+    const { points, color, strokeWeight } = stroke;
+
+    this.ctx.strokeStyle = color;
+    this.ctx.fillStyle = color;
+    this.ctx.lineWidth = strokeWeight;
+
     if (points.length === 0) {
       return;
     }
