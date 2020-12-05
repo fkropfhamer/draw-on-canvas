@@ -1,6 +1,6 @@
 {
   "name": "draw-on-canvas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "draw on canvas",
   "keywords": [
     "canvas",
@@ -14,7 +14,9 @@
     "lint": "eslint . -c .eslintrc.js --ext js,json",
     "lint:fix": "eslint . -c .eslintrc.js --ext js,json --fix",
     "test:mutation": "stryker run",
-    "build": "babel src --out-dir dist"
+    "build": "babel src --out-dir dist",
+    "watch": "babel src --watch --out-dir dist",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
