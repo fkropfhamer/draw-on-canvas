@@ -5,16 +5,16 @@ export default class Draw {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
   private strokeColor: string;
-  private drawing: any[];
+  private drawing: { color: string, strokeWeight: number, points: number[] }[];
   private height: number;
   private width: number;
-  constructor(element: HTMLElement, width: number, height: number, { backgroundColor = 'cyan', strokeColor = 'black', strokeWeight = 15 } = {});
+  constructor(element: HTMLElement, width: number, height: number, opts: { backgroundColor?: string, strokeColor?: string, strokeWeight?: number });
 
   changeStrokeColor(strokeColor: string): void;
   changeBackgroundColor(backgroundColor: string | CanvasGradient | CanvasPattern): void;
   changeStrokeWeight(strokeWeight: number): void
   getDrawing(): any[];
-  downloadPNG(filename = 'canvas.png'): void;
+  downloadPNG(filename?: string): void;
   private setupEventListeners(): void;
   private onMouseMove(event: MouseEvent): void;
   private onMouseDown(): void;
@@ -24,6 +24,6 @@ export default class Draw {
   reset(): void;
   private clearCanvas(): void;
   private draw(): void;
-  private drawLinePoint(point: any[]): void;
-  private drawStroke(stroke: any[]): void;
+  private drawLinePoint(point: {x: number, y: number}[]): void;
+  private drawStroke(stroke: { color: string, strokeWeight: number, points: number[] }[]): void;
 }
