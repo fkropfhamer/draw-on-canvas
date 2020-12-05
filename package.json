@@ -1,19 +1,22 @@
 {
   "name": "draw-on-canvas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "draw on canvas",
   "keywords": [
     "canvas",
     "draw",
     "creative"
   ],
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
     "lint": "eslint . -c .eslintrc.js --ext js,json",
     "lint:fix": "eslint . -c .eslintrc.js --ext js,json --fix",
-    "test:mutation": "stryker run"
+    "test:mutation": "stryker run",
+    "build": "babel src --out-dir dist",
+    "watch": "babel src --watch --out-dir dist",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,7 @@
   },
   "homepage": "https://github.com/fkropfhamer/draw-on-canvas#readme",
   "devDependencies": {
+    "@babel/cli": "^7.12.1",
     "@babel/core": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@stryker-mutator/babel-transpiler": "^3.3.1",
@@ -40,6 +44,6 @@
     "stryker-cli": "^1.0.0"
   },
   "files": [
-    "src/*"
+    "dist/*"
   ]
 }
