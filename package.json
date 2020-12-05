@@ -8,6 +8,7 @@
     "creative"
   ],
   "main": "dist/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
