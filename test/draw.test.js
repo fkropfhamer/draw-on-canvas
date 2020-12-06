@@ -78,11 +78,10 @@ describe('Draw', () => {
     expect(mockCanvas.getContext).toHaveBeenCalledWith('2d');
 
     expect(draw.ctx).toBe(mockCtx);
-    expect(mockCtx.strokeStyle).toBe('black');
-    expect(mockCtx.fillStyle).toBe('black');
-    expect(mockCtx.lineWidth).toBe(15);
+    expect(draw.strokeColor).toBe('black');
+    expect(draw.strokeWeight).toBe(15);
 
-    expect(draw.drawing).toEqual([[]]);
+    expect(draw.drawing).toEqual([{ color: 'black', strokeWeight: 15, points: [] }]);
 
     expect(draw.height).toBe(2);
     expect(draw.width).toBe(1);
@@ -98,8 +97,7 @@ describe('Draw', () => {
   test('changeStrokeColor', () => {
     draw.changeStrokeColor('color');
 
-    expect(draw.ctx.strokeStyle).toBe('color');
-    expect(draw.ctx.fillStyle).toBe('color');
+    expect(draw.strokeColor).toBe('color');
   });
 
   test('changeBackgroundColor', () => {
@@ -111,7 +109,7 @@ describe('Draw', () => {
   test('changeStrokeWeight', () => {
     draw.changeStrokeWeight(100);
 
-    expect(draw.ctx.lineWidth).toBe(100);
+    expect(draw.strokeWeight).toBe(100);
   });
 
   test('getDrawing', () => {
@@ -141,7 +139,7 @@ describe('Draw', () => {
 
     draw.onMouseMove({ offsetX: 1, offsetY: 2 });
 
-    expect(draw.drawing).toEqual([[{ x: 1, y: 2 }]]);
+    expect(draw.drawing).toEqual([{ points: [{ x: 1, y: 2 }], color: 'black', strokeWeight: 15 }]);
     expect(draw.draw).toHaveBeenCalledTimes(1);
   });
 
@@ -151,7 +149,7 @@ describe('Draw', () => {
 
     draw.onMouseMove({ offsetX: 1, offsetY: 2 });
 
-    expect(draw.drawing).toEqual([[]]);
+    expect(draw.drawing).toEqual([{ points: [], color: 'black', strokeWeight: 15 }]);
     expect(draw.draw).toHaveBeenCalledTimes(0);
   });
 
@@ -167,16 +165,18 @@ describe('Draw', () => {
     draw.onMouseUp();
 
     expect(draw.mouseIsDown).toBe(false);
-    expect(draw.drawing).toEqual([[]]);
+    expect(draw.drawing).toEqual([{ points: [], color: 'black', strokeWeight: 15 }]);
   });
 
   test('onMouseUp last line is not empty', () => {
     draw.mouseIsDown = true;
-    draw.drawing = [[{ x: 1, y: 2 }]];
+    draw.strokeWeight = 321;
+    draw.strokeColor = 'purple';
+    draw.drawing = [{ points: [{ x: 1, y: 2 }] }];
     draw.onMouseUp();
 
     expect(draw.mouseIsDown).toBe(false);
-    expect(draw.drawing).toEqual([[{ x: 1, y: 2 }], []]);
+    expect(draw.drawing).toEqual([{ points: [{ x: 1, y: 2 }] }, { color: 'purple', strokeWeight: 321, points: [] }]);
   });
 
   test('getPixelArray', () => {
