@@ -193,29 +193,38 @@ describe('Draw', () => {
   });
 
   test('reset', () => {
+    draw.strokeColor = 'green';
+    draw.strokeWeight = 123;
+
     draw.drawing = [[], [], []];
 
     draw.reset();
 
-    expect(draw.drawing).toEqual([[]]);
+    expect(draw.drawing).toEqual([{ color: 'green', strokeWeight: 123, points: [] }]);
     expect(mockCtx.clearRect).toHaveBeenCalledTimes(1);
     expect(mockCtx.clearRect).toHaveBeenCalledWith(0, 0, 1, 2);
   });
 
   test('draw', () => {
-    draw.drawing = [[], [], [], [], []];
-    draw.drawPoints = jest.fn();
+    draw.drawing = [
+      { points: [], color: 'red', strokeWeight: 10 },
+      { points: [], color: 'red', strokeWeight: 10 },
+      { points: [], color: 'red', strokeWeight: 10 },
+      { points: [], color: 'red', strokeWeight: 10 },
+      { points: [], color: 'red', strokeWeight: 10 },
+    ];
+    draw.drawStroke = jest.fn();
 
     draw.draw();
 
-    expect(draw.drawPoints).toHaveBeenCalledTimes(5);
-    expect(draw.drawPoints).toHaveBeenCalledWith([]);
+    expect(draw.drawStroke).toHaveBeenCalledTimes(5);
+    expect(draw.drawStroke).toHaveBeenCalledWith({ points: [], color: 'red', strokeWeight: 10 });
   });
 
   test('drawLinePoint', () => {
     const point = { x: 1, y: 2 };
 
-    draw.drawLinePoint(point);
+    draw.drawLinePoint(point, 15);
 
     expect(mockCtx.beginPath).toHaveBeenCalledTimes(1);
     expect(mockCtx.arc).toHaveBeenCalledTimes(1);
@@ -225,20 +234,32 @@ describe('Draw', () => {
   });
 
   test('drawPoints empty', () => {
-    const points = [];
+    const stroke = { points: [], color: 'test-color', strokeWeight: 30 };
     draw.drawLinePoint = jest.fn();
 
-    draw.drawPoints(points);
+    draw.drawStroke(stroke);
+
+    expect(mockCtx.strokeStyle).toBe('test-color');
+    expect(mockCtx.fillStyle).toBe('test-color');
+    expect(mockCtx.lineWidth).toBe(30);
 
     expect(draw.drawLinePoint).toHaveBeenCalledTimes(0);
     expect(mockCtx.beginPath).toHaveBeenCalledTimes(0);
   });
 
-  test('drawPoints <6', () => {
-    const points = [{ x: 1, y: 2 }, { x: 3, y: 4 }];
+  test('drawStroke <6', () => {
+    const stroke = {
+      points: [{ x: 1, y: 2 }, { x: 3, y: 4 }],
+      color: 'test-color',
+      strokeWeight: 30,
+    };
     draw.drawLinePoint = jest.fn();
 
-    draw.drawPoints(points);
+    draw.drawStroke(stroke);
+
+    expect(mockCtx.strokeStyle).toBe('test-color');
+    expect(mockCtx.fillStyle).toBe('test-color');
+    expect(mockCtx.lineWidth).toBe(30);
 
     expect(draw.drawLinePoint).toHaveBeenCalledTimes(1);
     expect(draw.drawLinePoint).toHaveBeenCalledWith({ x: 1, y: 2 });
@@ -246,18 +267,26 @@ describe('Draw', () => {
     expect(mockCtx.beginPath).toHaveBeenCalledTimes(0);
   });
 
-  test('drawPoints >6', () => {
-    const points = [
-      { x: 1, y: 2 },
-      { x: 3, y: 4 },
-      { x: 5, y: 6 },
-      { x: 7, y: 8 },
-      { x: 11, y: 12 },
-      { x: 13, y: 14 },
-    ];
+  test('drawStroke >6', () => {
+    const stroke = {
+      points: [
+        { x: 1, y: 2 },
+        { x: 3, y: 4 },
+        { x: 5, y: 6 },
+        { x: 7, y: 8 },
+        { x: 11, y: 12 },
+        { x: 13, y: 14 },
+      ],
+      color: 'test-color',
+      strokeWeight: 30,
+    };
     draw.drawLinePoint = jest.fn();
 
-    draw.drawPoints(points);
+    draw.drawStroke(stroke);
+
+    expect(mockCtx.strokeStyle).toBe('test-color');
+    expect(mockCtx.fillStyle).toBe('test-color');
+    expect(mockCtx.lineWidth).toBe(30);
 
     expect(mockCtx.beginPath).toHaveBeenCalledTimes(1);
     expect(mockCtx.moveTo).toHaveBeenCalledTimes(1);
@@ -274,6 +303,6 @@ describe('Draw', () => {
     expect(mockCtx.stroke).toHaveBeenCalledTimes(1);
 
     expect(draw.drawLinePoint).toHaveBeenCalledTimes(1);
-    expect(draw.drawLinePoint).toHaveBeenCalledWith({ x: 13, y: 14 });
+    expect(draw.drawLinePoint).toHaveBeenCalledWith({ x: 13, y: 14 }, 30);
   });
 });
