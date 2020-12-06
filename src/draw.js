@@ -168,9 +168,9 @@ export default class Draw {
     });
   }
 
-  drawLinePoint(point) {
+  drawLinePoint(point, strokeWeight) {
     this.ctx.beginPath();
-    this.ctx.arc(point.x, point.y, this.ctx.lineWidth / 2, 0, Math.PI * 2, true);
+    this.ctx.arc(point.x, point.y, strokeWeight / 2, 0, Math.PI * 2, true);
     this.ctx.closePath();
     this.ctx.fill();
   }
@@ -207,6 +207,6 @@ export default class Draw {
     this.ctx.quadraticCurveTo(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
     this.ctx.stroke();
 
-    this.drawLinePoint(points[points.length - 1]);
+    this.drawLinePoint(points[points.length - 1], strokeWeight);
   }
 }
