@@ -8,7 +8,7 @@ describe('util', () => {
     expect(chunkArray(['a', 'b', 'c'], 1)).toEqual([['a'], ['b'], ['c']]);
   });
 
-  test('donwloadURI', () => {
+  test('downloadURI', () => {
     const mockLink = { click: jest.fn() };
     document.createElement = jest.fn(() => mockLink);
     document.body.appendChild = jest.fn();
