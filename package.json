@@ -1,6 +1,6 @@
 {
   "name": "draw-on-canvas",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "draw on canvas",
   "keywords": [
     "canvas",
@@ -45,6 +45,7 @@
     "stryker-cli": "^1.0.0"
   },
   "files": [
-    "dist/*"
+    "dist/*",
+    "types/*"
   ]
 }
