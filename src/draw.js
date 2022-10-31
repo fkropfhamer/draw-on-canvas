@@ -6,8 +6,7 @@ export default class Draw {
    * @param {CanvasRenderingContext2D} ctx
    */
   static getPixelArray(ctx) {
-    const { height } = ctx.canvas;
-    const { width } = ctx.canvas;
+    const { height, width } = ctx.canvas;
 
     const imageData = ctx.getImageData(0, 0, width, height);
     const pixels = imageData.data;
@@ -132,6 +131,7 @@ export default class Draw {
   onMouseMove(event) {
     const x = event.offsetX;
     const y = event.offsetY;
+
     if (this.mouseIsDown) {
       this.drawing[this.drawing.length - 1].points.push({ x, y });
       this.draw();
@@ -149,6 +149,7 @@ export default class Draw {
     if (this.drawing[this.drawing.length - 1].points.length > 0) {
       this.drawing.push({ color: this.strokeColor, strokeWeight: this.strokeWeight, points: [] });
     }
+
     this.mouseIsDown = false;
   }
 
