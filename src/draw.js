@@ -105,10 +105,10 @@ export default class Draw {
   }
 
   setupEventListeners() {
-    this.canvas.addEventListener('mousemove', this.onMouseMove.bind(this));
+    this.canvas.addEventListener('pointermove', this.onMouseMove.bind(this));
 
-    window.addEventListener('mousedown', this.onMouseDown.bind(this));
-    window.addEventListener('mouseup', this.onMouseUp.bind(this));
+    window.addEventListener('pointerdown', this.onMouseDown.bind(this));
+    window.addEventListener('pointerup', this.onMouseUp.bind(this));
   }
 
   /**

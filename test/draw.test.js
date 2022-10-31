@@ -87,11 +87,11 @@ describe('Draw', () => {
     expect(draw.width).toBe(1);
 
     expect(mockCanvas.addEventListener).toHaveBeenCalledTimes(1);
-    expect(mockCanvas.addEventListener.mock.calls[0][0]).toBe('mousemove');
+    expect(mockCanvas.addEventListener.mock.calls[0][0]).toBe('pointermove');
 
     expect(window.addEventListener).toHaveBeenCalledTimes(2);
-    expect(window.addEventListener.mock.calls[0][0]).toBe('mousedown');
-    expect(window.addEventListener.mock.calls[1][0]).toBe('mouseup');
+    expect(window.addEventListener.mock.calls[0][0]).toBe('pointerdown');
+    expect(window.addEventListener.mock.calls[1][0]).toBe('pointerup');
   });
 
   test('changeStrokeColor', () => {
