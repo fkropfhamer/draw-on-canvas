@@ -69,7 +69,7 @@ describe('Draw', () => {
     expect(document.createElement).toHaveBeenCalledWith('canvas');
     expect(mockCanvas.width).toBe(1);
     expect(mockCanvas.height).toBe(2);
-    expect(mockCanvas.style.backgroundColor).toBe('cyan');
+    expect(mockCanvas.style).toMatchObject({ backgroundColor: 'cyan', touchAction: 'none' });
 
     expect(mockElement.appendChild).toHaveBeenCalledTimes(1);
     expect(mockElement.appendChild).toHaveBeenCalledWith(mockCanvas);
@@ -116,6 +116,14 @@ describe('Draw', () => {
     draw.drawing = [[1, 2, 3, 4, 5]];
 
     expect(draw.getDrawing()).toEqual([[1, 2, 3, 4, 5]]);
+  });
+
+  test('setCanvasStyle', () => {
+    const style = { backgroundColor: 'green', borderStyle: 'dotted' };
+
+    draw.setCanvasStyle(style);
+
+    expect(draw.canvas.style).toMatchObject(style);
   });
 
   test('downloadPNG', () => {

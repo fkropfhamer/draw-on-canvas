@@ -46,11 +46,15 @@ export default class Draw {
    * @param {number} height
    * @param {object} opts
    */
-  constructor(element, width, height, { backgroundColor = 'cyan', strokeColor = 'black', strokeWeight = 15 } = {}) {
+  constructor(element, width, height, {
+    style = { touchAction: 'none' }, backgroundColor = 'cyan', strokeColor = 'black', strokeWeight = 15,
+  } = {}) {
     this.canvas = document.createElement('canvas');
     this.canvas.width = width;
     this.canvas.height = height;
     this.canvas.style.backgroundColor = backgroundColor;
+
+    this.setCanvasStyle(style);
 
     element.appendChild(this.canvas);
 
@@ -89,6 +93,16 @@ export default class Draw {
    */
   changeStrokeWeight(strokeWeight) {
     this.strokeWeight = strokeWeight;
+  }
+
+  /**
+   *
+   * @param {object} style
+   */
+  setCanvasStyle(style) {
+    Object.entries(style).forEach(([key, value]) => {
+      this.canvas.style[key] = value;
+    });
   }
 
   getDrawing() {
