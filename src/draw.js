@@ -118,39 +118,39 @@ export default class Draw {
   }
 
   setupEventListeners() {
-    this.canvas.addEventListener('pointermove', this.onMouseMove.bind(this));
+    this.canvas.addEventListener('pointermove', this.onPointerMove.bind(this));
 
-    window.addEventListener('pointerdown', this.onMouseDown.bind(this));
-    window.addEventListener('pointerup', this.onMouseUp.bind(this));
+    window.addEventListener('pointerdown', this.onPointerDown.bind(this));
+    window.addEventListener('pointerup', this.onPointerUp.bind(this));
   }
 
   /**
    *
-   * @param {MouseEvent} event
+   * @param {PointerEvent} event
    */
-  onMouseMove(event) {
+  onPointerMove(event) {
     const x = event.offsetX;
     const y = event.offsetY;
 
-    if (this.mouseIsDown) {
+    if (this.pointerIsDown) {
       this.drawing[this.drawing.length - 1].points.push({ x, y });
       this.draw();
     }
   }
 
-  onMouseDown() {
-    this.mouseIsDown = true;
+  onPointerDown() {
+    this.pointerIsDown = true;
 
     this.drawing[this.drawing.length - 1].strokeWeight = this.strokeWeight;
     this.drawing[this.drawing.length - 1].color = this.strokeColor;
   }
 
-  onMouseUp() {
+  onPointerUp() {
     if (this.drawing[this.drawing.length - 1].points.length > 0) {
       this.drawing.push({ color: this.strokeColor, strokeWeight: this.strokeWeight, points: [] });
     }
 
-    this.mouseIsDown = false;
+    this.pointerIsDown = false;
   }
 
   getPixelArray() {

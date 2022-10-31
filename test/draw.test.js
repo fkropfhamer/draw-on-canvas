@@ -141,49 +141,49 @@ describe('Draw', () => {
     expect(mockCanvas.toDataURL).toHaveBeenCalledWith('image/png');
   });
 
-  test('onMouseMove mouseIsDown = true', () => {
-    draw.mouseIsDown = true;
+  test('onPointerMove pointerIsDown = true', () => {
+    draw.pointerIsDown = true;
     draw.draw = jest.fn();
 
-    draw.onMouseMove({ offsetX: 1, offsetY: 2 });
+    draw.onPointerMove({ offsetX: 1, offsetY: 2 });
 
     expect(draw.drawing).toEqual([{ points: [{ x: 1, y: 2 }], color: 'black', strokeWeight: 15 }]);
     expect(draw.draw).toHaveBeenCalledTimes(1);
   });
 
-  test('onMouseMove mouseIsDown = false', () => {
-    draw.mouseIsDown = false;
+  test('onPointerMove pointerIsDown = false', () => {
+    draw.pointerIsDown = false;
     draw.draw = jest.fn();
 
-    draw.onMouseMove({ offsetX: 1, offsetY: 2 });
+    draw.onPointerMove({ offsetX: 1, offsetY: 2 });
 
     expect(draw.drawing).toEqual([{ points: [], color: 'black', strokeWeight: 15 }]);
     expect(draw.draw).toHaveBeenCalledTimes(0);
   });
 
-  test('onMouseDown', () => {
-    draw.mouseIsDown = false;
-    draw.onMouseDown();
+  test('onPointerDown', () => {
+    draw.pointerIsDown = false;
+    draw.onPointerDown();
 
-    expect(draw.mouseIsDown).toBe(true);
+    expect(draw.pointerIsDown).toBe(true);
   });
 
-  test('onMouseUp last line is empty', () => {
-    draw.mouseIsDown = true;
-    draw.onMouseUp();
+  test('onPointerUp last line is empty', () => {
+    draw.pointerIsDown = true;
+    draw.onPointerUp();
 
-    expect(draw.mouseIsDown).toBe(false);
+    expect(draw.pointerIsDown).toBe(false);
     expect(draw.drawing).toEqual([{ points: [], color: 'black', strokeWeight: 15 }]);
   });
 
-  test('onMouseUp last line is not empty', () => {
-    draw.mouseIsDown = true;
+  test('onPointerUp last line is not empty', () => {
+    draw.pointerIsDown = true;
     draw.strokeWeight = 321;
     draw.strokeColor = 'purple';
     draw.drawing = [{ points: [{ x: 1, y: 2 }] }];
-    draw.onMouseUp();
+    draw.onPointerUp();
 
-    expect(draw.mouseIsDown).toBe(false);
+    expect(draw.pointerIsDown).toBe(false);
     expect(draw.drawing).toEqual([{ points: [{ x: 1, y: 2 }] }, { color: 'purple', strokeWeight: 321, points: [] }]);
   });
 
