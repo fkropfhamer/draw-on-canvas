@@ -8,10 +8,11 @@ export default class Draw {
   private drawing: { color: string, strokeWeight: number, points: number[] }[];
   private height: number;
   private width: number;
-  constructor(element: HTMLElement, width: number, height: number, opts: { backgroundColor?: string, strokeColor?: string, strokeWeight?: number });
+  constructor(element: HTMLElement, width: number, height: number, opts: { backgroundColor?: string, strokeColor?: string, strokeWeight?: number, style?: Object });
 
   changeStrokeColor(strokeColor: string): void;
   changeBackgroundColor(backgroundColor: string | CanvasGradient | CanvasPattern): void;
+  setCanvasStyle(style: Object): void;
   changeStrokeWeight(strokeWeight: number): void
   getDrawing(): any[];
   downloadPNG(filename?: string): void;
